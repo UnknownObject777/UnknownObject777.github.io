@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chenhao Cui · 崔辰昊</title>
+  <meta name="description" content="Chenhao Cui 的个人主页 — AI Agent、移动端智能体与 AI 生产力工具。">
+  <style>
+    :root {
+      --bg: #0a0e14;
+      --bg-soft: #11161f;
+      --card: #141a24;
+      --border: #232c3b;
+      --text: #e6e9ef;
+      --text-dim: #9aa5b5;
+      --accent: #6ea8fe;
+      --accent-2: #b07bff;
+      --green: #3fb950;
+      --radius: 14px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Inter", "PingFang SC", "Microsoft YaHei", -apple-system, "Segoe UI", sans-serif;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrap { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+    /* ---------- nav ---------- */
+    nav {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(10, 14, 20, .82);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    nav .wrap {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 58px;
+    }
+    .logo { font-weight: 700; font-size: 1.05rem; letter-spacing: .5px; color: var(--text); }
+    .logo:hover { text-decoration: none; }
+    .logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 26px; font-size: .92rem; }
+    .nav-links a { color: var(--text-dim); }
+    .nav-links a:hover { color: var(--text); text-decoration: none; }
+
+    /* ---------- hero ---------- */
+    .hero { padding: 110px 0 90px; position: relative; overflow: hidden; }
+    .hero::before {
+      content: ""; position: absolute; top: -140px; right: -120px;
+      width: 480px; height: 480px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(110,168,254,.16), transparent 65%);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: ""; position: absolute; bottom: -180px; left: -140px;
+      width: 420px; height: 420px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(176,123,255,.12), transparent 65%);
+      pointer-events: none;
+    }
+    .hero .hello {
+      font-family: "SF Mono", "JetBrains Mono", Consolas, monospace;
+      color: var(--accent); font-size: .95rem; margin-bottom: 14px;
+    }
+    .hero h1 {
+      font-size: clamp(2.4rem, 6vw, 3.6rem);
+      font-weight: 800; letter-spacing: -1px; line-height: 1.15;
+    }
+    .hero h1 .grad {
+      background: linear-gradient(92deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero .tagline {
+      margin-top: 18px; max-width: 620px;
+      color: var(--text-dim); font-size: 1.08rem;
+    }
+    .hero .meta {
+      margin-top: 14px; font-size: .92rem; color: var(--text-dim);
+      display: flex; gap: 18px; flex-wrap: wrap;
+    }
+    .hero .cta { margin-top: 34px; display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 11px 22px; border-radius: 10px;
+      font-size: .95rem; font-weight: 600;
+      border: 1px solid var(--border);
+      color: var(--text); background: var(--card);
+      transition: transform .15s ease, border-color .15s ease;
+    }
+    .btn:hover { text-decoration: none; transform: translateY(-2px); border-color: var(--accent); }
+    .btn.primary { background: linear-gradient(92deg, var(--accent), var(--accent-2)); border: none; color: #0a0e14; }
+
+    /* ---------- sections ---------- */
+    section { padding: 64px 0; }
+    .sec-title {
+      font-size: 1.55rem; font-weight: 700; letter-spacing: -.5px;
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 8px;
+    }
+    .sec-title::after {
+      content: ""; flex: 1; height: 1px;
+      background: linear-gradient(90deg, var(--border), transparent);
+    }
+    .sec-sub { color: var(--text-dim); font-size: .95rem; margin-bottom: 30px; }
+
+    .grid { display: grid; gap: 16px; }
+    .grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+    @media (max-width: 760px) {
+      .grid.cols-3, .grid.cols-2 { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 24px;
+      transition: transform .15s ease, border-color .15s ease;
+    }
+    .card:hover { transform: translateY(-3px); border-color: #31405a; }
+    .card h3 { font-size: 1.05rem; margin-bottom: 8px; }
+    .card p { color: var(--text-dim); font-size: .92rem; }
+    .card .icon { font-size: 1.5rem; margin-bottom: 12px; display: block; }
+
+    /* repo rows (dynamic) */
+    .repo-row {
+      display: flex; flex-direction: column; gap: 4px;
+      padding: 15px 20px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      transition: border-color .15s ease;
+    }
+    .repo-row:hover { border-color: #31405a; }
+    .repo-row .top {
+      display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+    }
+    .repo-row .name { font-weight: 600; font-size: .98rem; }
+    .repo-row .name a { color: var(--text); }
+    .repo-row .name a:hover { color: var(--accent); text-decoration: none; }
+    .repo-row .badge {
+      font-size: .75rem; color: var(--text-dim);
+      border: 1px solid var(--border); border-radius: 999px;
+      padding: 1px 10px;
+    }
+    .repo-row .stars { margin-left: auto; font-size: .82rem; color: #e3b341; white-space: nowrap; }
+    .repo-row .date { margin-left: auto; font-size: .82rem; color: var(--text-dim); white-space: nowrap; }
+    .repo-row .desc { color: var(--text-dim); font-size: .88rem; }
+    .repo-list { display: flex; flex-direction: column; gap: 12px; }
+
+    /* footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 34px 0 44px;
+      color: var(--text-dim); font-size: .85rem;
+      text-align: center;
+    }
+    footer .updated {
+      font-family: "SF Mono", Consolas, monospace;
+      font-size: .78rem; margin-top: 6px; opacity: .75;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="logo" href="#">chenhao<span>.</span>cui</a>
+    <div class="nav-links">
+      <a href="#interests">方向</a>
+      <a href="#projects">项目</a>
+      <a href="#stars">最近 Star</a>
+      <a href="#activity">动态</a>
+      <a href="https://github.com/UnknownObject777" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="hello">$ whoami</p>
+    <h1>Hi, I'm <span class="grad">Chenhao Cui</span>.<br>我用 AI Agent 造工具。</h1>
+    <p class="tagline">
+      深圳大学研究生。关注 AI Agent 与 Coding Harness 生态，喜欢把大模型装进
+      桌面应用、TUI 和手机里，做真正能提高生产力的本地优先工具。
+    </p>
+    <div class="meta">
+      <span>🎓 深圳大学</span>
+      <span>📍 广东 · 深圳</span>
+      <span>💡 AI Agent · Coding Tools · Mobile Agent</span>
+    </div>
+    <div class="cta">
+      <a class="btn primary" href="https://github.com/UnknownObject777" target="_blank" rel="noopener">GitHub 主页 ↗</a>
+      <a class="btn" href="#projects">看看项目</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section id="interests">
+    <h2 class="sec-title">我关注的方向</h2>
+    <p class="sec-sub">目前主要精力投入在这三件事上。</p>
+    <div class="grid cols-3">
+      <div class="card">
+        <span class="icon">🤖</span>
+        <h3>AI Agent 与 Coding Harness</h3>
+        <p>AI 编程助手、harness / TUI 工具链与 Agent Skills 生态——让 AI 写代码这件事变得确定、可复现。</p>
+      </div>
+      <div class="card">
+        <span class="icon">📱</span>
+        <h3>移动端智能体</h3>
+        <p>基于视觉语言模型的 Android / 手机自动化 Agent，用自然语言驱动真实设备完成操作。</p>
+      </div>
+      <div class="card">
+        <span class="icon">🛠️</span>
+        <h3>AI 生产力工具</h3>
+        <p>文档智能排版、桌面工作台等本地优先的 AI 应用——数据不出本机，效率肉眼可见。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <h2 class="sec-title">代表项目</h2>
+    <p class="sec-sub">一些我自己在做的东西。</p>
+    <div class="grid cols-2">
+      <div class="card">
+        <h3><a href="https://github.com/UnknownObject777/paiban-studio" target="_blank" rel="noopener">paiban-studio</a></h3>
+        <p>AI 驱动的 Office 排版本地工作台：LLM 不写脚本，只产出声明式排版命令——规则集保样式、结构摘要省 token、版本链可回滚、全程本地。</p>
+      </div>
+      <div class="card">
+        <h3><a href="https://github.com/UnknownObject777/chenhao-skills" target="_blank" rel="noopener">chenhao-skills</a></h3>
+        <p>自研 AI Coding Agent Skills 集合，覆盖代码审查、文档同步、推送前检查等工程化工作流。</p>
+      </div>
+      <div class="card">
+        <h3><a href="https://github.com/UnknownObject777/cchenhao-coding-tui" target="_blank" rel="noopener">cchenhao-coding-tui</a></h3>
+        <p>Coding agent TUI 实验项目，探索终端里的 AI 编程交互形态。</p>
+      </div>
+      <div class="card">
+        <h3><a href="https://github.com/UnknownObject777/ai-fitness-agent" target="_blank" rel="noopener">ai-fitness-agent</a></h3>
+        <p>AI 健身助手 Agent，把训练计划交给大模型来管。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="stars">
+    <h2 class="sec-title">最近 Star 的项目</h2>
+    <p class="sec-sub">我最近在关注这些仓库（每日自动更新）。</p>
+    <!-- STARS:START -->
+<div class="repo-list">
+  <div class="repo-row">
+    <div class="top"><span class="name"><a href="https://github.com/OpenMinis/OpenMinis" target="_blank" rel="noopener">OpenMinis/OpenMinis</a></span><span class="badge">Swift</span><span class="stars">⭐ 3860</span></div>
+    <p class="desc">OpenMinis — The AI Agent app across platforms. Fully free and open source.</p>
+  </div>
+  <div class="repo-row">
+    <div class="top"><span class="name"><a href="https://github.com/toby-bridges/92-humanizer" target="_blank" rel="noopener">toby-bridges/92-humanizer</a></span><span class="badge">Python</span><span class="stars">⭐ 1</span></div>
+    <p class="desc">人味诊断镜:诊断中文长文的 AI 味/人味,不优化检测分、不生造锚点、不打分。附支撑文章与预注册评测。</p>
+  </div>
+  <div class="repo-row">
+    <div class="top"><span class="name"><a href="https://github.com/XiaomingX/mimofan" target="_blank" rel="noopener">XiaomingX/mimofan</a></span><span class="badge">Rust</span><span class="stars">⭐ 31</span></div>
+    <p class="desc">mimofan - AI coding agent platform</p>
+  </div>
+  <div class="repo-row">
+    <div class="top"><span class="name"><a href="https://github.com/coleam00/Archon" target="_blank" rel="noopener">coleam00/Archon</a></span><span class="badge">TypeScript</span><span class="stars">⭐ 23235</span></div>
+    <p class="desc">The first open-source harness builder for AI coding. Make AI coding deterministic and repeatable.</p>
+  </div>
+  <div class="repo-row">
+    <div class="top"><span class="name"><a href="https://github.com/CyC2018/Job-Recommend" target="_blank" rel="noopener">CyC2018/Job-Recommend</a></span><span class="badge">Shell</span><span class="stars">⭐ 3000</span></div>
+    <p class="desc">🔎 互联网内推信息（社招、校招、实习）</p>
+  </div>
+  <div class="repo-row">
+    <div class="top"><span class="name"><a href="https://github.com/addyosmani/agent-skills" target="_blank" rel="noopener">addyosmani/agent-skills</a></span><span class="badge">JavaScript</span><span class="stars">⭐ 88818</span></div>
+    <p class="desc">Production-grade engineering skills for AI coding agents.</p>
+  </div>
+  <div class="repo-row">
+    <div class="top"><span class="name"><a href="https://github.com/yashab-cyber/opendroid" target="_blank" rel="noopener">yashab-cyber/opendroid</a></span><span class="badge">Kotlin</span><span class="stars">⭐ 877</span></div>
+    <p class="desc">Your Open Autonomous Android Agent — A production-ready, self-planning AI assistant powered by local/remote LLMs and accessibility-driven screen automation.</p>
+  </div>
+  <div class="repo-row">
+    <div class="top"><span class="name"><a href="https://github.com/anthropics/financial-services" target="_blank" rel="noopener">anthropics/financial-services</a></span><span class="badge">Python</span><span class="stars">⭐ 34435</span></div>
+    <p class="desc"></p>
+  </div>
+  <div class="repo-row">
+    <div class="top"><span class="name"><a href="https://github.com/byoungd/up" target="_blank" rel="noopener">byoungd/up</a></span><span class="badge">JavaScript</span><span class="stars">⭐ 60215</span></div>
+    <p class="desc">An advanced guide which might benefit you a lot 🎉 . 人生进阶指南 离谱的人生 离谱的英语学习指南/英语学习教程/英语学习/学英语</p>
+  </div>
+  <div class="repo-row">
+    <div class="top"><span class="name"><a href="https://github.com/Hisn00w/ASu-skills" target="_blank" rel="noopener">Hisn00w/ASu-skills</a></span><span class="badge">HTML</span><span class="stars">⭐ 1652</span></div>
+    <p class="desc">简历包装</p>
+  </div>
+</div>
+<!-- STARS:END -->
+  </section>
+
+  <section id="activity">
+    <h2 class="sec-title">最近更新的仓库</h2>
+    <p class="sec-sub">我最近的提交动态（每日自动更新）。</p>
+    <!-- REPOS:START -->
+<div class="repo-list">
+  <div class="repo-row">
+    <div class="top"><span class="name"><a href="https://github.com/UnknownObject777/UnknownObject777" target="_blank" rel="noopener">UnknownObject777</a></span><span class="badge">Python</span><span class="date">2026-08-20</span></div>
+    <p class="desc"></p>
+  </div>
+  <div class="repo-row">
+    <div class="top"><span class="name"><a href="https://github.com/UnknownObject777/chenhao-skills" target="_blank" rel="noopener">chenhao-skills</a></span><span class="badge">Python</span><span class="date">2026-08-20</span></div>
+    <p class="desc"></p>
+  </div>
+  <div class="repo-row">
+    <div class="top"><span class="name"><a href="https://github.com/UnknownObject777/open-design" target="_blank" rel="noopener">open-design</a></span><span class="date">2026-08-20</span></div>
+    <p class="desc">🎨 Best DeepSeek Harness Design Plugin. The open-source Claude Design alternative. 🖥️ Local-first desktop app. 🖼️ Your coding agent becomes the design engine: prototypes, landing pages, dashboards, slides, images &amp; video — real files, HTML/PDF/PPTX/MP4 export. 🤖 Claude Code / Codex / Cursor / DeepSeek Harness / OpenCode &amp; 20+ CLIs via BYOK.</p>
+  </div>
+  <div class="repo-row">
+    <div class="top"><span class="name"><a href="https://github.com/UnknownObject777/opendroid" target="_blank" rel="noopener">opendroid</a></span><span class="date">2026-08-18</span></div>
+    <p class="desc">Your Open Autonomous Android Agent — A production-ready, self-planning AI assistant powered by local/remote LLMs and accessibility-driven screen automation.</p>
+  </div>
+  <div class="repo-row">
+    <div class="top"><span class="name"><a href="https://github.com/UnknownObject777/paiban-studio" target="_blank" rel="noopener">paiban-studio</a></span><span class="badge">TypeScript</span><span class="date">2026-08-18</span></div>
+    <p class="desc">AI 驱动的 Office 排版本地工作台：LLM 不写脚本，只产出声明式排版命令——规则集保样式、结构摘要省 token、版本链可回滚、全程本地</p>
+  </div>
+  <div class="repo-row">
+    <div class="top"><span class="name"><a href="https://github.com/UnknownObject777/cchenhao-coding-tui" target="_blank" rel="noopener">cchenhao-coding-tui</a></span><span class="badge">TypeScript</span><span class="date">2026-08-10</span></div>
+    <p class="desc"></p>
+  </div>
+  <div class="repo-row">
+    <div class="top"><span class="name"><a href="https://github.com/UnknownObject777/Word-Formatter-Pro" target="_blank" rel="noopener">Word-Formatter-Pro</a></span><span class="badge">Python</span><span class="date">2026-08-02</span></div>
+    <p class="desc">一款桌面应用程序，可将格式混乱的 Word 文档（及兼容格式）一键转换为符合规范的专业文档，实现排版工作自动化。</p>
+  </div>
+  <div class="repo-row">
+    <div class="top"><span class="name"><a href="https://github.com/UnknownObject777/grok-build" target="_blank" rel="noopener">grok-build</a></span><span class="date">2026-07-15</span></div>
+    <p class="desc">SpaceXAI's coding agent harness and TUI. Fullscreen, mouse interactive, extensible.</p>
+  </div>
+</div>
+<!-- REPOS:END -->
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>© 2026 Chenhao Cui · Built with GitHub Pages</p>
+    <!-- UPDATED:START -->
+<p class="updated">last updated: 2026-08-21 00:37 UTC · auto-generated by GitHub Actions</p>
+<!-- UPDATED:END -->
+  </div>
+</footer>
+
+</body>
+</html>
